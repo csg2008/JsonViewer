@@ -36,6 +36,13 @@ namespace EPocalipse.Json.Viewer
             }
         }
 
+        public void setMouse(int iIndex)
+        {
+            this.txtJson.Focus();//给richTextBox焦点
+            this.txtJson.Select(iIndex, 0);
+            this.txtJson.ScrollToCaret(); //滚动到控件光标处 
+        }
+
         [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
         public string Json
         {
@@ -48,7 +55,9 @@ namespace EPocalipse.Json.Viewer
                 if (_json != value)
                 {
                     _json = value.Trim();
+                    int iIndex = txtJson.SelectionStart;
                     txtJson.Text = _json;
+                    setMouse(iIndex);
                     Redraw();
                 }
             }
@@ -108,7 +117,7 @@ namespace EPocalipse.Json.Viewer
         private void GetParseErrorDetails(Exception parserError)
         {
             UnbufferedStringReader strReader = new UnbufferedStringReader(_json);
-            using (JsonReader reader = new JsonReader(strReader))
+            using (JsonReader reader = new JsonTextReader(strReader))
             {
                 try
                 {
@@ -365,31 +374,6 @@ namespace EPocalipse.Json.Viewer
             tabControl.SelectedIndex = (int)tab;
         }
 
-        private void btnFormat_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string json = txtJson.Text;
-                JsonSerializer s = new JsonSerializer();
-                JsonReader reader = new JsonReader(new StringReader(json));
-                Object jsonObject = s.Deserialize(reader);
-                if (jsonObject != null)
-                {
-                    StringWriter sWriter = new StringWriter();
-                    JsonWriter writer = new JsonWriter(sWriter);
-                    writer.Formatting = Formatting.Indented;
-                    writer.Indentation = 4;
-                    writer.IndentChar = ' ';
-                    s.Serialize(writer, jsonObject);
-                    txtJson.Text = sWriter.ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowException(ex);
-            }
-        }
-
         private void ShowException(Exception e)
         {
             MessageBox.Show(this, e.Message, "Json Viewer", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -619,6 +603,11 @@ namespace EPocalipse.Json.Viewer
             txtJson.Text = Clipboard.GetText();
         }
 
+        private void btnClean_Click(object sender, EventArgs e)
+        {
+            txtJson.Text = "";
+        }
+
         private void mnuCopy_Click(object sender, EventArgs e)
         {
             JsonViewerTreeNode node = GetSelectedTreeNode();
@@ -722,6 +711,86 @@ namespace EPocalipse.Json.Viewer
                 case "pageTextView":
                     FindNextInText(findNext);
                     break;
+            }
+        }
+
+        private void btnMini1_ButtonClick(object sender, EventArgs e)
+        {
+            minToolStripMenuItem3_Click(sender, e);
+        }
+
+        private void minToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string json = txtJson.Text;
+                JsonSerializer s = new JsonSerializer();
+                JsonReader reader = new JsonTextReader(new StringReader(json));
+                Object jsonObject = s.Deserialize(reader);
+                if (jsonObject != null)
+                {
+                    StringWriter sWriter = new StringWriter();
+                    JsonTextWriter writer = new JsonTextWriter(sWriter);
+                    writer.Formatting = Formatting.None;
+                    writer.Indentation = 0;
+                    writer.IndentChar = ' ';
+                    s.Serialize(writer, jsonObject);
+                    txtJson.Text = sWriter.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
+            }
+        }
+
+        private void minToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string json = txtJson.Text;
+                JsonSerializer s = new JsonSerializer();
+                JsonReader reader = new JsonTextReader(new StringReader(json));
+                Object jsonObject = s.Deserialize(reader);
+                if (jsonObject != null)
+                {
+                    StringWriter sWriter = new StringWriter();
+                    JsonTextWriter writer = new JsonTextWriter(sWriter);
+                    writer.Formatting = Formatting.Indented;
+                    writer.Indentation = 0;
+                    writer.IndentChar = ' ';
+                    s.Serialize(writer, jsonObject);
+                    txtJson.Text = sWriter.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
+            }
+        }
+
+        private void minToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string json = txtJson.Text;
+                JsonSerializer s = new JsonSerializer();
+                JsonReader reader = new JsonTextReader(new StringReader(json));
+                Object jsonObject = s.Deserialize(reader);
+                if (jsonObject != null)
+                {
+                    StringWriter sWriter = new StringWriter();
+                    JsonTextWriter writer = new JsonTextWriter(sWriter);
+                    writer.Formatting = Formatting.Indented;
+                    writer.Indentation = 4;
+                    writer.IndentChar = ' ';
+                    s.Serialize(writer, jsonObject);
+                    txtJson.Text = sWriter.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
             }
         }
     }

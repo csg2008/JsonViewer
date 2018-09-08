@@ -89,8 +89,16 @@ namespace EPocalipse.Json.Viewer
                             val = "\"" + val + "\"";
                         _text = String.Format("{0} : {1}", Id, val);
                     }
-                    else
+                    else if (JsonType == JsonType.Array)
+                    {
+                        _text = Id + " Array(" + _fields.Count+")";
+                    } else if (JsonType == JsonType.Object)
+                    {
+                        _text = Id + " Object(" + _fields.Count+")";
+                    } else
+                    {
                         _text = Id;
+                    }
                 }
                 return _text;
             }

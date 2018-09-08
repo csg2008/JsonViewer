@@ -76,10 +76,10 @@ namespace EPocalipse.Json.JsonView
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter =
-               "Yahoo! Pipe files (*.run)|*.run|json files (*.json)|*.json|All files (*.*)|*.*";
+            dialog.Filter = "json files|*.json;*.run;*.xhr;*.har|All files (*.*)|*.*";
             dialog.InitialDirectory = Application.StartupPath;
             dialog.Title = "Select a JSON file";
+            dialog.RestoreDirectory = true;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 this.LoadFromFile(dialog.FileName);
@@ -255,6 +255,26 @@ namespace EPocalipse.Json.JsonView
             if (node != null && node.JsonObject.Value != null)
             {
                 Clipboard.SetText(node.JsonObject.Value.ToString());
+            }
+        }
+
+        private void collapseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Control c;
+            c = this.JsonViewer.Controls.Find("tvJson", true)[0];
+            ((TreeView)c).BeginUpdate();
+            try
+            {
+                if (((TreeView)c).SelectedNode != null)
+                {
+                    TreeNode topNode = ((TreeView)c).TopNode;
+                    ((TreeView)c).SelectedNode.Collapse();
+                    ((TreeView)c).TopNode = topNode;
+                }
+            }
+            finally
+            {
+                ((TreeView)c).EndUpdate();
             }
         }
     }

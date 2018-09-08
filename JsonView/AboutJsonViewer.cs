@@ -24,7 +24,9 @@ namespace EPocalipse.Json.JsonView
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription + Environment.NewLine + Environment.NewLine +
                 "Additional changes in 2014 by Pawel Cioch on GitHub " + Environment.NewLine + 
-                "https://github.com/skironDotNet/JsonViewer";
+                "https://github.com/skironDotNet/JsonViewer" + Environment.NewLine +
+                "Additional changes in 2018 by chen.s.g on GitHub " + Environment.NewLine +
+                "https://github.com/csg800/JsonViewer";
         }
 
         #region Assembly Attribute Accessors
@@ -113,5 +115,10 @@ namespace EPocalipse.Json.JsonView
             }
         }
         #endregion
+
+        private void textBoxDescription_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

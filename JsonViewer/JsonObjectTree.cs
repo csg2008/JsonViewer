@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using System.Collections;
@@ -29,7 +30,7 @@ namespace EPocalipse.Json.Viewer
             object jsonObject;
             try
             {
-                jsonObject = JavaScriptConvert.DeserializeObject(json);
+                jsonObject = JsonConvert.DeserializeObject(json);
             }
             catch (Exception e)
             {
@@ -54,22 +55,22 @@ namespace EPocalipse.Json.Viewer
 
         private void AddChildren(object jsonObject, JsonObject obj)
         {
-            JavaScriptObject javaScriptObject = jsonObject as JavaScriptObject;
+            JObject javaScriptObject = jsonObject as JObject;
             if (javaScriptObject != null)
             {
-                foreach (KeyValuePair<string, object> pair in javaScriptObject)
+                foreach (KeyValuePair<string, JToken> pair in javaScriptObject)
                 {
                     obj.Fields.Add(ConvertToObject(pair.Key, pair.Value));
                 }
             }
             else
             {
-                JavaScriptArray javaScriptArray = jsonObject as JavaScriptArray;
+                JArray javaScriptArray = jsonObject as JArray;
                 if (javaScriptArray != null)
                 {
                     for (int i = 0; i < javaScriptArray.Count; i++)
                     {
-                        obj.Fields.Add(ConvertToObject("[" + i.ToString() + "]", javaScriptArray[i]));
+                        obj.Fields.Add(ConvertToObject(i.ToString() + " -> ", javaScriptArray[i]));
                     }
                 }
             }
@@ -78,9 +79,9 @@ namespace EPocalipse.Json.Viewer
         private JsonObject CreateJsonObject(object jsonObject)
         {
             JsonObject obj = new JsonObject();
-            if (jsonObject is JavaScriptArray)
+            if (jsonObject is JArray)
                 obj.JsonType = JsonType.Array;
-            else if (jsonObject is JavaScriptObject)
+            else if (jsonObject is JObject)
                 obj.JsonType = JsonType.Object;
             else
             {
