@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
+using System.Xml.Linq;
 using System.Windows.Forms;
 using System.Drawing.Design;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Threading;
 using EPocalipse.Json.Viewer.Properties;
@@ -586,6 +588,8 @@ namespace EPocalipse.Json.Viewer
 
             mnuCopy.Enabled = mnuExpandAll.Enabled;
             mnuCopyValue.Enabled = mnuExpandAll.Enabled;
+            mnuCopyJSON.Enabled = mnuExpandAll.Enabled;
+            mnuCopyXML.Enabled = mnuExpandAll.Enabled;
         }
 
         private void btnCopy_Click(object sender, EventArgs e)
@@ -647,6 +651,51 @@ namespace EPocalipse.Json.Viewer
             }
         }
 
+        private void mnuCopyJSON_Click(object sender, EventArgs e)
+        {
+            JsonViewerTreeNode node = GetSelectedTreeNode();
+            if (node != null && node.Tag != null)
+            {
+                JsonObject obj = node.Tag as JsonObject;
+                Clipboard.SetText(obj.Value.ToString());
+            }
+            else
+            {
+                Clipboard.SetText("null");
+            }
+        }
+
+        private void mnuCopyXML_Click(object sender, EventArgs e)
+        {
+            JsonViewerTreeNode node = GetSelectedTreeNode();
+            if (node != null && node.Tag != null)
+            {
+                JsonObject obj = node.Tag as JsonObject;
+                if (obj.Value is JArray)
+                {
+                    JsonObject xmlObj = new JsonObject();
+                    xmlObj.JsonType = JsonType.Object;
+                    xmlObj.Fields.Add(obj);
+
+                    XNode xmlNode = JsonConvert.DeserializeXNode(xmlObj.Value.ToString(), obj.Id);
+                    Clipboard.SetText(xmlNode.ToString());
+                }
+                else if (obj.Value is JObject)
+                {
+                    XNode xmlNode = JsonConvert.DeserializeXNode(obj.Value.ToString(), obj.Id);
+                    Clipboard.SetText(xmlNode.ToString());
+                }
+                else
+                {
+                    Clipboard.SetText("<" + obj.Id + ">"+obj.Value.ToString()+ "</" + obj.Id + ">");
+                }
+            }
+            else
+            {
+                Clipboard.SetText("<null />");
+            }
+        }
+        
         private void lblError_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (lblError.Enabled && lblError.Tag != null)

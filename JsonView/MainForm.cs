@@ -76,7 +76,7 @@ namespace EPocalipse.Json.JsonView
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "json files|*.json;*.run;*.xhr;*.har|All files (*.*)|*.*";
+            dialog.Filter = "All support files|*.json;*.run;*.xhr;*.har;*.xml|All files (*.*)|*.*";
             dialog.InitialDirectory = Application.StartupPath;
             dialog.Title = "Select a JSON file";
             dialog.RestoreDirectory = true;

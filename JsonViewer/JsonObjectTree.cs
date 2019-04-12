@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,10 +27,18 @@ namespace EPocalipse.Json.Viewer
 
         public static JsonObjectTree Parse(string json)
         {
-            //Parse the JSON string
+            //Parse the JSON & XML string
             object jsonObject;
             try
             {
+                if (json.StartsWith("<") && json.EndsWith(">"))
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(json);
+
+                    json = JsonConvert.SerializeXmlNode(doc);
+                }
+
                 jsonObject = JsonConvert.DeserializeObject(json);
             }
             catch (Exception e)
@@ -80,14 +89,20 @@ namespace EPocalipse.Json.Viewer
         {
             JsonObject obj = new JsonObject();
             if (jsonObject is JArray)
+            {
                 obj.JsonType = JsonType.Array;
+            }
             else if (jsonObject is JObject)
+            {
                 obj.JsonType = JsonType.Object;
+            }
             else
             {
                 obj.JsonType = JsonType.Value;
-                obj.Value = jsonObject;
             }
+
+            obj.Value = jsonObject;
+
             return obj;
         }
 

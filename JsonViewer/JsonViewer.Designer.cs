@@ -39,6 +39,8 @@ namespace EPocalipse.Json.Viewer
             this.mnuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCopyName = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCopyValue = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCopyJSON = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCopyXML = new System.Windows.Forms.ToolStripMenuItem();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.pnlVisualizer = new System.Windows.Forms.Panel();
             this.mnuVisualizerPnl = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -136,7 +138,9 @@ namespace EPocalipse.Json.Viewer
             this.toolStripMenuItem1,
             this.mnuCopy,
             this.mnuCopyName,
-            this.mnuCopyValue});
+            this.mnuCopyValue,
+            this.mnuCopyJSON,
+            this.mnuCopyXML});
             this.mnuTree.Name = "mnuTree";
             this.mnuTree.Size = new System.Drawing.Size(164, 130);
             this.mnuTree.Opening += new System.ComponentModel.CancelEventHandler(this.mnuTree_Opening);
@@ -180,6 +184,20 @@ namespace EPocalipse.Json.Viewer
             this.mnuCopyValue.Size = new System.Drawing.Size(163, 24);
             this.mnuCopyValue.Text = "Copy &Value";
             this.mnuCopyValue.Click += new System.EventHandler(this.mnuCopyValue_Click);
+            // 
+            // mnuCopyJSON
+            // 
+            this.mnuCopyJSON.Name = "mnuCopyJSON";
+            this.mnuCopyJSON.Size = new System.Drawing.Size(163, 24);
+            this.mnuCopyJSON.Text = "Copy as &JSON";
+            this.mnuCopyJSON.Click += new System.EventHandler(this.mnuCopyJSON_Click);
+            // 
+            // mnuCopyXML
+            // 
+            this.mnuCopyXML.Name = "mnuCopyXML";
+            this.mnuCopyXML.Size = new System.Drawing.Size(163, 24);
+            this.mnuCopyXML.Text = "Copy as &XML";
+            this.mnuCopyXML.Click += new System.EventHandler(this.mnuCopyXML_Click);
             // 
             // imgList
             // 
@@ -589,6 +607,8 @@ namespace EPocalipse.Json.Viewer
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem mnuCopy;
         private System.Windows.Forms.ToolStripMenuItem mnuCopyValue;
+        private System.Windows.Forms.ToolStripMenuItem mnuCopyJSON;
+        private System.Windows.Forms.ToolStripMenuItem mnuCopyXML;
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem removenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeSpecialCharsToolStripMenuItem;
